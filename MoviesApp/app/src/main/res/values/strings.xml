@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MoviesApp</string>
+    <string name="SEARCH_MOVIE_URL">https://api.themoviedb.org/3/movie/</string>
+    <string name="BASE_URL_IMAGE">http://image.tmdb.org/t/p/w185</string>
+    <string name="KEY_MOVIE_DB">c4852d11798d35ebae996afb362875d4</string>
+    <string name="LANGUAGE_VALUE">en-US</string>
+
+    <string name= "api_key"> api_key</string>
+    <string name= "language"> language</string>
+
+    <string name="popular_value">popular</string>
+    <string name="top_rated_value">top_rated</string>
+    <string name="favorite_movies_value">favorite_movies</string>
+    <string name="error_listing_movies">Error listing Movies. Click here to reload!</string>
+    <string name="reload_image">reload image</string>
+
 </resources>
