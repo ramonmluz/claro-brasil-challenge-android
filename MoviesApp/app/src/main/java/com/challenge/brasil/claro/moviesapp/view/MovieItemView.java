@@ -2,11 +2,14 @@ package com.challenge.brasil.claro.moviesapp.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,10 +42,21 @@ public class MovieItemView extends FrameLayout {
 
     public void bind(Movie movie) {
         if (movie != null) {
-            String imgageUrl = getContext().getString(R.string.BASE_URL_IMAGE) + movie.getPosterPath() ;
+            String imageUrl = getContext().getString(R.string.BASE_URL_IMAGE) + movie.getPosterPath() ;
 
-            // Obtem a imagem do objeto user e a insere no componente de imagem instanciado
-            Picasso.with(movieImageGrid.getContext()).load(imgageUrl).into(movieImageGrid);
+            Picasso.with(movieImageGrid.getContext()).load(imageUrl).placeholder(R.drawable.ic_place_holder).error(R.mipmap.ic_launcher)
+                    .into(movieImageGrid,
+                    new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("TAG", "onSuccess");
+                        }
+
+                        @Override
+                        public void onError() {
+                            Toast.makeText(getContext(), "An error occurred", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 

@@ -1,8 +1,11 @@
 package com.challenge.brasil.claro.moviesapp.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.challenge.brasil.claro.moviesapp.R;
 
@@ -10,10 +13,10 @@ import com.challenge.brasil.claro.moviesapp.R;
 public class ViewUtil {
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
         return new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                .setMessage( mensagem );
+                .setMessage(mensagem);
     }
 
-    public static void alert(Context context, String mensagem){
+    public static void alert(Context context, String mensagem) {
         alert(context, mensagem, null);
     }
 
@@ -28,5 +31,10 @@ public class ViewUtil {
                 }).create().show();
     }
 
+    public static String getSharedPreferences(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String sortType = prefs.getString(context.getString(R.string.movie_list_key), context.getString(R.string.popular_value));
+        return sortType;
+    }
 
 }

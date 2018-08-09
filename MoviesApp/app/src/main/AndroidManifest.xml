@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.challenge.brasil.claro.moviesapp">
 
-    <!-- Permisssions  -->
+    <!-- Permisssions -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -18,6 +18,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".view.MainActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.challenge.brasil.claro.moviesapp.view.MainActivity_" />
         </activity>
     </application>
 

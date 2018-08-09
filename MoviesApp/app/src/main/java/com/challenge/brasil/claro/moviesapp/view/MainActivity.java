@@ -1,24 +1,27 @@
 package com.challenge.brasil.claro.moviesapp.view;
 
+import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.challenge.brasil.claro.moviesapp.R;
+import com.challenge.brasil.claro.moviesapp.SettingsActivity;
 import com.challenge.brasil.claro.moviesapp.adapter.MovieAdapter;
 import com.challenge.brasil.claro.moviesapp.model.bo.ApiCallBack;
 import com.challenge.brasil.claro.moviesapp.model.bo.MovieBO;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
-import com.challenge.brasil.claro.moviesapp.util.ViewUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @EActivity(R.layout.activity_main)
+@OptionsMenu(R.menu.menu_main)
 public class MainActivity extends AppCompatActivity {
 
     @Bean
@@ -85,12 +89,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(CollectionUtils.isNotEmpty(movies)){
+            showList(movies);
+        }else{
+            searchMovies();
+        }
+    }
+
     @UiThread
     protected void showList(List<Movie> movies) {
-        showView(recyclerView);
         this.movies = movies;
         movieAdapter.setItems(this.movies);
         movieAdapter.notifyDataSetChanged();
+        showView(recyclerView);
     }
 
     void showView(View view) {
@@ -111,6 +126,25 @@ public class MainActivity extends AppCompatActivity {
     @Click(R.id.areaErro)
     protected void reloadMovies() {
         searchMovies();
+    }
+
+    private void seetupAcionBar(){
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar !=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

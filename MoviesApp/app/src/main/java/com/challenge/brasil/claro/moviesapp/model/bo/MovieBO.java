@@ -2,6 +2,7 @@ package com.challenge.brasil.claro.moviesapp.model.bo;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.widget.ViewUtils;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,6 +14,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.challenge.brasil.claro.moviesapp.util.JsonUtil;
+import com.challenge.brasil.claro.moviesapp.util.ViewUtil;
+import com.challenge.brasil.claro.moviesapp.view.MainActivity_;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -36,8 +39,8 @@ public class MovieBO {
     public void requestMovies(final ApiCallBack callBack) {
         final Map<Integer, String> responseMap = new HashMap<Integer, String>();
 
-        String sort = context.getString(R.string.popular_value);
-        Uri uri = buildMoviesUri(sort);
+        String searchMovieType  = ViewUtil.getSharedPreferences(context);
+        Uri uri = buildMoviesUri(searchMovieType);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, uri.toString(), null,
                 new Response.Listener<JSONObject>() {
@@ -106,10 +109,10 @@ public class MovieBO {
         return errorMessage;
     }
 
-    private Uri buildMoviesUri(String sortMovies) {
+    private Uri buildMoviesUri(String searchMovieType) {
         return Uri.parse(context.getString(R.string.SEARCH_MOVIE_URL))
                 .buildUpon()
-                .appendPath(sortMovies)
+                .appendPath(searchMovieType)
                 .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
                 .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
     }
