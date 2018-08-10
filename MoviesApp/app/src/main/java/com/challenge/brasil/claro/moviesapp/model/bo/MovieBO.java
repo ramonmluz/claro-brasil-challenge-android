@@ -36,11 +36,11 @@ public class MovieBO {
     Context context;
 
     @Background
-    public void requestMovies(final ApiCallBack callBack) {
+    public void requestMovies(final ApiCallBack callBack, String nameQuery) {
         final Map<Integer, String> responseMap = new HashMap<Integer, String>();
 
-        String searchMovieType  = ViewUtil.getSharedPreferences(context);
-        Uri uri = buildMoviesUri(searchMovieType);
+//        String searchMovieType  = ViewUtil.getSharedPreferences(context);
+        Uri uri = buildMoviesUri(nameQuery);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, uri.toString(), null,
                 new Response.Listener<JSONObject>() {
@@ -109,12 +109,14 @@ public class MovieBO {
         return errorMessage;
     }
 
-    private Uri buildMoviesUri(String searchMovieType) {
+    private Uri buildMoviesUri(String nameQuery) {
         return Uri.parse(context.getString(R.string.SEARCH_MOVIE_URL))
                 .buildUpon()
-                .appendPath(searchMovieType)
                 .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
+                .appendQueryParameter(context.getString(R.string.query), nameQuery)
                 .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
+
+//        https://api.themoviedb.org/3/search/movie?api_key=c4852d11798d35ebae996afb362875d4&query=Miss&language=en-US
     }
 
 

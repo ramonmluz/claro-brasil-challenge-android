@@ -5,7 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin_medium"
     tools:context=".view.MainActivity">
+
+    <EditText
+        android:id="@+id/searchMovieText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Enter search movie"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
 
     <include
         android:id="@+id/progress"
@@ -22,9 +35,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/searchMovieText"
+        tools:visibility="visible" />
 
 
     <LinearLayout
@@ -35,10 +47,8 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/margin_medium">
+        tools:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/searchMovieText" >
 
         <ImageView
             android:layout_width="@dimen/load_img_size"
@@ -62,5 +72,7 @@
             tools:text="@string/error_listing_movies" />
 
     </LinearLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

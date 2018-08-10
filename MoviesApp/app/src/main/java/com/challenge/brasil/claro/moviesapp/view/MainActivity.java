@@ -5,8 +5,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.challenge.brasil.claro.moviesapp.R;
@@ -40,19 +43,25 @@ public class MainActivity extends AppCompatActivity {
     MovieAdapter movieAdapter;
 
     @ViewById
-    protected View progress;
+    protected RecyclerView recyclerView;
 
-    @InstanceState
-    protected List<Movie> movies;
+    @ViewById
+    protected View progress;
 
     @ViewById
     protected View areaErro;
 
     @ViewById
-    protected TextView textMsgErroView;
+    protected EditText searchMovieText;
 
     @ViewById
-    protected RecyclerView recyclerView;
+    protected TextView textMsgErroView;
+
+    @InstanceState
+    protected List<Movie> movies;
+
+    @InstanceState
+    protected String nameQuery;
 
     private GridLayoutManager mLayoutManager;
 
@@ -60,12 +69,39 @@ public class MainActivity extends AppCompatActivity {
     void init() {
         textMsgErroView.setText(getString(R.string.error_listing_movies));
         initRecyclerView();
+        initTextChangeListner();
+        showView(null);
 
         if (CollectionUtils.isNotEmpty(movies)) {
             showList(movies);
-        } else {
-            searchMovies();
         }
+    }
+
+    private void initTextChangeListner() {
+        searchMovieText.addTextChangedListener(new TextWatcher() {
+            private boolean isChanged = false;
+
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
+                if(charSequence.length() < 3) {
+                    return;
+                }
+                nameQuery = charSequence.toString();
+                searchMovies();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -86,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             public void onError(Map error) {
                 showError(error);
             }
-        });
+        }, nameQuery);
     }
 
     @Override
@@ -95,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(CollectionUtils.isNotEmpty(movies)){
             showList(movies);
-        }else{
-            searchMovies();
         }
     }
 
