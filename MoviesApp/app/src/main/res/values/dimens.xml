@@ -4,6 +4,7 @@
     <dimen name="loading_margin">30dp</dimen>
 
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_minimum">4dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_big">32dp</dimen>
 

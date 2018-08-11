@@ -3,6 +3,8 @@ package com.challenge.brasil.claro.moviesapp.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,6 +26,8 @@ public class MovieItemView extends FrameLayout {
     @ViewById
     protected ImageView movieImageGrid;
 
+    private ViewGroup.MarginLayoutParams layoutParams;
+
     public MovieItemView(Context context) {
         super(context);
     }
@@ -40,11 +44,20 @@ public class MovieItemView extends FrameLayout {
     void init() {
     }
 
-    public void bind(Movie movie) {
+    public void bind(Movie movie, int position) {
         if (movie != null) {
+
+//            layoutParams = new ViewGroup.MarginLayoutParams(movieImageGrid.getLayoutParams());
+//
+//            if(position % 2 == 0){
+//                defineMargin(8, 4);
+//            } else{
+//                defineMargin(4,8);
+//            }
+
             String imageUrl = getContext().getString(R.string.BASE_URL_IMAGE) + movie.getPosterPath() ;
 
-            Picasso.with(movieImageGrid.getContext()).load(imageUrl).placeholder(R.drawable.ic_place_holder).error(R.mipmap.ic_launcher)
+            Picasso.with(movieImageGrid.getContext()).load(imageUrl).placeholder(R.mipmap.local_movies).error(R.mipmap.ic_launcher)
                     .into(movieImageGrid,
                     new Callback() {
                         @Override
@@ -59,6 +72,7 @@ public class MovieItemView extends FrameLayout {
                     });
         }
     }
+
 
     @Click(R.id.movieImageGrid)
     void initMovieDetail() {

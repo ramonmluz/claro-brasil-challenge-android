@@ -1,19 +1,14 @@
 package com.challenge.brasil.claro.moviesapp.view;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBar;
+import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.MenuItem;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.challenge.brasil.claro.moviesapp.R;
-import com.challenge.brasil.claro.moviesapp.SettingsActivity;
 import com.challenge.brasil.claro.moviesapp.adapter.MovieAdapter;
 import com.challenge.brasil.claro.moviesapp.model.bo.ApiCallBack;
 import com.challenge.brasil.claro.moviesapp.model.bo.MovieBO;
@@ -51,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     protected View areaErro;
 
-    @ViewById
-    protected EditText searchMovieText;
+//    @ViewById
+//    protected EditText searchMovieText;
 
     @ViewById
     protected TextView textMsgErroView;
@@ -69,40 +64,42 @@ public class MainActivity extends AppCompatActivity {
     void init() {
         textMsgErroView.setText(getString(R.string.error_listing_movies));
         initRecyclerView();
-        initTextChangeListner();
+//        initTextChangeListner();
         showView(null);
 
         if (CollectionUtils.isNotEmpty(movies)) {
             showList(movies);
+        } else {
+            searchMovies();
         }
     }
 
-    private void initTextChangeListner() {
-        searchMovieText.addTextChangedListener(new TextWatcher() {
-            private boolean isChanged = false;
-
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-
-                if(charSequence.length() < 3) {
-                    return;
-                }
-                nameQuery = charSequence.toString();
-                searchMovies();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
+//    private void initTextChangeListner() {
+//        searchMovieText.addTextChangedListener(new TextWatcher() {
+//            private boolean isChanged = false;
+//
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+//
+//                if(charSequence.length() < 3) {
+//                    return;
+//                }
+//                nameQuery = charSequence.toString();
+//                searchMovies();
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//    }
 
     private void initRecyclerView() {
         mLayoutManager = new GridLayoutManager(this, 2);
@@ -129,17 +126,51 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(CollectionUtils.isNotEmpty(movies)){
-            showList(movies);
+        if (CollectionUtils.isNotEmpty(movies)) {
+            showView(recyclerView);
         }
     }
 
     @UiThread
     protected void showList(List<Movie> movies) {
+
         this.movies = movies;
         movieAdapter.setItems(this.movies);
         movieAdapter.notifyDataSetChanged();
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int moviePosition = parent.getChildLayoutPosition(view);
+
+                if(moviePosition == 0 || moviePosition == 1 ){
+                    outRect.top = getAnIntDp(8);
+                    defineMarginBottom(outRect);
+                }else {
+                    defineMarginBottom(outRect);
+                }
+
+                if (moviePosition % 2 == 0) {
+                    defineMargin(outRect, 8,4);
+                } else {
+                    defineMargin(outRect, 4,8);
+                }
+            }
+        });
+
         showView(recyclerView);
+    }
+
+    private void defineMarginBottom(Rect outRect) {
+        outRect.bottom = getAnIntDp(8);
+    }
+
+    private void defineMargin(Rect outRect ,int marginLeft, int marginRight ) {
+        outRect.left =  getAnIntDp(marginLeft);
+        outRect.right =  getAnIntDp(marginRight);
+    }
+
+    private int getAnIntDp(int value) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
     }
 
     void showView(View view) {
@@ -162,23 +193,23 @@ public class MainActivity extends AppCompatActivity {
         searchMovies();
     }
 
-    private void seetupAcionBar(){
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar !=null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    private void seetupAcionBar(){
+//        ActionBar actionBar = getSupportActionBar();
+//        if(actionBar !=null){
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
+//    }
+//
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_settings:
+//                startActivity(new Intent(this, SettingsActivity.class));
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
 }

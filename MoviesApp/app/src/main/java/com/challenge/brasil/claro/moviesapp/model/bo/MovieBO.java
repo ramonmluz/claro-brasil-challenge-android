@@ -38,10 +38,7 @@ public class MovieBO {
     @Background
     public void requestMovies(final ApiCallBack callBack, String nameQuery) {
         final Map<Integer, String> responseMap = new HashMap<Integer, String>();
-
-//        String searchMovieType  = ViewUtil.getSharedPreferences(context);
-        Uri uri = buildMoviesUri(nameQuery);
-
+        Uri uri = getUri(nameQuery);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, uri.toString(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -75,8 +72,17 @@ public class MovieBO {
                         callBack.onError(responseMap);
                     }
                 });
-
         VolleyRequest.getInstance(context).addToRequestQueue(request);
+    }
+
+    private Uri getUri(String nameQuery) {
+        Uri uri;
+        if (!TextUtils.isEmpty(nameQuery)) {
+            uri = buildMoviesUri(nameQuery);
+        } else {
+            uri = buildSearchPopularMoviesUri();
+        }
+        return uri;
     }
 
     private String validateMessagStatusCodeError(VolleyError error, String errorMessage, NetworkResponse response) {
@@ -115,9 +121,13 @@ public class MovieBO {
                 .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
                 .appendQueryParameter(context.getString(R.string.query), nameQuery)
                 .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
-
-//        https://api.themoviedb.org/3/search/movie?api_key=c4852d11798d35ebae996afb362875d4&query=Miss&language=en-US
     }
 
-
+    private Uri buildSearchPopularMoviesUri() {
+        return Uri.parse(context.getString(R.string.SEARCH_POPULAR_MOVIE_URL))
+                .buildUpon()
+                .appendPath(context.getString(R.string.popular_value))
+                .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
+                .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
+    }
 }

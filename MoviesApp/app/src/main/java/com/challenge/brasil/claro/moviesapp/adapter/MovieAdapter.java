@@ -29,7 +29,7 @@ public class MovieAdapter extends RecyclerViewAdapterBase<Movie, MovieItemView> 
     public void onBindViewHolder(ViewWrapper<MovieItemView> holder, int position) {
         MovieItemView view = holder.getView();
         Movie movie = items.get(position);
-        view.bind(movie);
+        view.bind(movie, position);
     }
 
     @Override
