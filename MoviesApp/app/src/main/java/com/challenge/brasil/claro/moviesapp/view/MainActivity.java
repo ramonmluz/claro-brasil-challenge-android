@@ -4,7 +4,10 @@ import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,10 +23,12 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     protected View areaErro;
 
-//    @ViewById
-//    protected EditText searchMovieText;
-
     @ViewById
     protected TextView textMsgErroView;
+
+    @ViewById
+    protected Toolbar toolbar;
 
     @InstanceState
     protected List<Movie> movies;
@@ -60,13 +65,15 @@ public class MainActivity extends AppCompatActivity {
 
     private GridLayoutManager mLayoutManager;
 
+    private  List<Movie> popularMovies;
+
+    private boolean isListPopularMoviesCloned = false;
+
     @AfterViews
     void init() {
         textMsgErroView.setText(getString(R.string.error_listing_movies));
+        setSupportActionBar(toolbar);
         initRecyclerView();
-//        initTextChangeListner();
-        showView(null);
-
         if (CollectionUtils.isNotEmpty(movies)) {
             showList(movies);
         } else {
@@ -74,37 +81,80 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void initTextChangeListner() {
-//        searchMovieText.addTextChangedListener(new TextWatcher() {
-//            private boolean isChanged = false;
-//
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//
-//                if(charSequence.length() < 3) {
-//                    return;
-//                }
-//                nameQuery = charSequence.toString();
-//                searchMovies();
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
-//    }
+    @OptionsMenuItem(R.id.menuSearch)
+    void singleInjection(MenuItem item) {
+        setOnActionExpandListner(item);
+        SearchView searchView  = (SearchView) item.getActionView();
+        initTextSearchQuery(searchView);
+    }
+
+    private void setOnActionExpandListner(MenuItem item) {
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                fillItemsRecyclerView(popularMovies);
+                showView(recyclerView);
+                return true;
+            }
+        });
+    }
+
+    private void initTextSearchQuery(SearchView searchView) {
+        // TODO - Mudar de pesqusair
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if(!isListPopularMoviesCloned && CollectionUtils.isNotEmpty(movies)){
+                    popularMovies = (List) ((ArrayList)movies).clone();
+                    isListPopularMoviesCloned = true;
+                }
+
+                if(newText.length() <3 ){
+                    return false;
+                }
+                nameQuery = newText;
+                searchMovies();
+
+                return true;
+            }
+        });
+
+    }
 
     private void initRecyclerView() {
         mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(movieAdapter);
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int moviePosition = parent.getChildLayoutPosition(view);
+
+                if(moviePosition == 0 || moviePosition == 1 ){
+                    outRect.top = getAnIntDp(8);
+                    defineMarginBottom(outRect);
+                }else {
+                    defineMarginBottom(outRect);
+                }
+
+                if (moviePosition % 2 == 0) {
+                    defineMargin(outRect, 8,4);
+                } else {
+                    defineMargin(outRect, 4,8);
+                }
+            }
+        });
     }
 
     private void searchMovies() {
@@ -133,31 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
     @UiThread
     protected void showList(List<Movie> movies) {
-
         this.movies = movies;
-        movieAdapter.setItems(this.movies);
-        movieAdapter.notifyDataSetChanged();
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                int moviePosition = parent.getChildLayoutPosition(view);
-
-                if(moviePosition == 0 || moviePosition == 1 ){
-                    outRect.top = getAnIntDp(8);
-                    defineMarginBottom(outRect);
-                }else {
-                    defineMarginBottom(outRect);
-                }
-
-                if (moviePosition % 2 == 0) {
-                    defineMargin(outRect, 8,4);
-                } else {
-                    defineMargin(outRect, 4,8);
-                }
-            }
-        });
-
+        fillItemsRecyclerView(this.movies);
         showView(recyclerView);
+    }
+
+    private void fillItemsRecyclerView(List<Movie> movies) {
+        movieAdapter.setItems(movies);
+        movieAdapter.notifyDataSetChanged();
     }
 
     private void defineMarginBottom(Rect outRect) {
@@ -192,24 +225,5 @@ public class MainActivity extends AppCompatActivity {
     protected void reloadMovies() {
         searchMovies();
     }
-
-//    private void seetupAcionBar(){
-//        ActionBar actionBar = getSupportActionBar();
-//        if(actionBar !=null){
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
-//    }
-//
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                startActivity(new Intent(this, SettingsActivity.class));
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
 }

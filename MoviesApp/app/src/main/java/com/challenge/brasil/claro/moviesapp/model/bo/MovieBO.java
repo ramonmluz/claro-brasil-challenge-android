@@ -2,7 +2,6 @@ package com.challenge.brasil.claro.moviesapp.model.bo;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.ViewUtils;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -14,8 +13,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.challenge.brasil.claro.moviesapp.util.JsonUtil;
-import com.challenge.brasil.claro.moviesapp.util.ViewUtil;
-import com.challenge.brasil.claro.moviesapp.view.MainActivity_;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
