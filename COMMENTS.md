@@ -8,7 +8,7 @@ Segue abaixo as intrunções de entrega do projeto
 Arquitetura utilizada
 -------------
 
-- **MVC:** Arquitetura MVC para Visando separar as camadas de apresentação, negócio e acesso a dados. 
+- **MVC:** utilizada a arquitetura MVC visando estruturar o código em camadas de apresentação, negócio e acesso a dados. 
 ----------
 
 Bibliotecas de Terceiros
@@ -16,7 +16,7 @@ Bibliotecas de Terceiros
 - **Android Annotetions:** 
 - **gson** 
 - **parceler** 
-- **materialprogressbar** 
+- **materialprogressbar**
 - **Room** 
 - **Volley** 
 - **Picasso** 
