@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.challenge.brasil.claro.moviesapp.MovieDatailActivity">
+
+
+    <ImageView
+        android:id="@+id/movieImageDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/movie_image"
+        tools:src="@mipmap/local_movies"
+        />
+
+    <ImageView
+        android:id="@+id/favoriteMovieDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/movieImageDetail"
+        app:layout_constraintLeft_toRightOf="@id/movieImageDetail"
+        android:paddingLeft="@dimen/margin_small"
+        android:layout_marginTop="8dp"
+        android:src="@android:drawable/star_off"
+        android:contentDescription="@string/favorite_movies_nome"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/favoriteMovieDetail"
+        app:layout_constraintLeft_toLeftOf="@id/favoriteMovieDetail"
+        android:layout_marginLeft="@dimen/text_size_medium"
+        android:textAppearance="?android:textAppearanceSmall"
+        />
+
+    <TextView
+        android:id="@+id/overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/movieImageDetail"
+       tools:text="Movies Teste Search" />
+
+
+</android.support.constraint.ConstraintLayout>

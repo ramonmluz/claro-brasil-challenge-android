@@ -31,6 +31,8 @@
         app:layout_constraintTop_toBottomOf="@+id/appBar"
         android:layout_marginTop="@dimen/margin_small"
         android:paddingLeft="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_small"
+        android:contentDescription="@string/favorite_movies_nome"
         app:srcCompat="@android:drawable/btn_star_big_on"
         />
 
@@ -43,15 +45,20 @@
         app:layout_constraintLeft_toRightOf="@id/favoriteMovieOn"
         android:layout_marginTop="@dimen/margin_minimum"
         android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
         android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/yellow_icon"
         />
 
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="@dimen/margin_small"
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/favoriteMovieOn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible" />
 
 
@@ -95,7 +102,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_medium"
             tools:text="@string/error_listing_movies" />
 

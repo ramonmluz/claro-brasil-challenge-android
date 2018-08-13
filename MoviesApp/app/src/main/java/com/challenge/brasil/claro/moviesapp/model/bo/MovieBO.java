@@ -11,9 +11,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.challenge.brasil.claro.moviesapp.R;
+import com.challenge.brasil.claro.moviesapp.model.dao.AppDatabase;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.challenge.brasil.claro.moviesapp.util.JsonUtil;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -30,7 +32,15 @@ public class MovieBO {
     private static final String TAG = MovieBO.class.getSimpleName();
 
     @RootContext
-    Context context;
+    protected Context context;
+
+    private AppDatabase mDb;
+
+    @AfterInject
+    public void initBO() {
+        mDb = AppDatabase.getInMemoryDatabase(context);
+    }
+
 
     @Background
     public void requestMovies(final ApiCallBack callBack, String nameQuery) {
@@ -127,4 +137,17 @@ public class MovieBO {
                 .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
                 .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
     }
+
+    public List<Movie> findByMoviesFromTitle(String movieTitle){
+        return mDb.movieDao().findByMoviesFromTitle(movieTitle);
+    }
+
+    public void insert(Movie movie){
+        mDb.movieDao().insert(movie);
+    }
+
+    public void delete(Movie movie){
+        mDb.movieDao().delete(movie);
+    }
+
 }

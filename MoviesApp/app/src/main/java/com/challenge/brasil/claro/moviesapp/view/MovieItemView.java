@@ -1,6 +1,7 @@
 package com.challenge.brasil.claro.moviesapp.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -9,6 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.challenge.brasil.claro.moviesapp.MovieDatailActivity;
+import com.challenge.brasil.claro.moviesapp.MovieDatailActivity_;
 import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.squareup.picasso.Callback;
@@ -46,17 +49,8 @@ public class MovieItemView extends FrameLayout {
 
     public void bind(Movie movie, int position) {
         if (movie != null) {
-
-//            layoutParams = new ViewGroup.MarginLayoutParams(movieImageGrid.getLayoutParams());
-//
-//            if(position % 2 == 0){
-//                defineMargin(8, 4);
-//            } else{
-//                defineMargin(4,8);
-//            }
-
+            movieImageGrid.setTag(movie);
             String imageUrl = getContext().getString(R.string.BASE_URL_IMAGE) + movie.getPosterPath() ;
-
             Picasso.with(movieImageGrid.getContext()).load(imageUrl).placeholder(R.mipmap.local_movies).error(R.mipmap.ic_launcher)
                     .into(movieImageGrid,
                     new Callback() {
@@ -76,7 +70,10 @@ public class MovieItemView extends FrameLayout {
 
     @Click(R.id.movieImageGrid)
     void initMovieDetail() {
-        // TODO - Call Movie Detail
+        MovieDatailActivity_.intent(getContext())
+                .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .movie((Movie) movieImageGrid.getTag())
+                .start();
     }
 
 }

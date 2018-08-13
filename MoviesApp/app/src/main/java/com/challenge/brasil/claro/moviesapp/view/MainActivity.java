@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.challenge.brasil.claro.moviesapp.R;
@@ -57,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     protected Toolbar toolbar;
 
+    @ViewById
+    protected ImageView favoriteMovieOn;
+
+    @ViewById
+    protected TextView favoriteMovieText;
+
     @InstanceState
     protected List<Movie> movies;
 
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GridLayoutManager mLayoutManager;
 
-    private  List<Movie> popularMovies;
+    private List<Movie> popularMovies;
 
     private boolean isListPopularMoviesCloned = false;
 
@@ -81,10 +88,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void initRecyclerView() {
+        mLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(movieAdapter);
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int moviePosition = parent.getChildLayoutPosition(view);
+
+                if (moviePosition == 0 || moviePosition == 1) {
+                    outRect.top = getAnIntDp(8);
+                    defineMarginBottom(outRect);
+                } else {
+                    defineMarginBottom(outRect);
+                }
+
+                if (moviePosition % 2 == 0) {
+                    defineMargin(outRect, 8, 4);
+                } else {
+                    defineMargin(outRect, 4, 8);
+                }
+            }
+        });
+    }
+
+    private void defineMarginBottom(Rect outRect) {
+        outRect.bottom = getAnIntDp(8);
+    }
+
+    private void defineMargin(Rect outRect, int marginLeft, int marginRight) {
+        outRect.left = getAnIntDp(marginLeft);
+        outRect.right = getAnIntDp(marginRight);
+    }
+
+    private int getAnIntDp(int value) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
+    }
+
+
     @OptionsMenuItem(R.id.menuSearch)
     void singleInjection(MenuItem item) {
         setOnActionExpandListner(item);
-        SearchView searchView  = (SearchView) item.getActionView();
+        SearchView searchView = (SearchView) item.getActionView();
         initTextSearchQuery(searchView);
     }
 
@@ -105,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTextSearchQuery(SearchView searchView) {
-        // TODO - Mudar de pesqusair
+        // TODO - Changin Pesquisar Name
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -115,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                if(!isListPopularMoviesCloned && CollectionUtils.isNotEmpty(movies)){
-                    popularMovies = (List) ((ArrayList)movies).clone();
+                if (!isListPopularMoviesCloned && CollectionUtils.isNotEmpty(movies)) {
+                    popularMovies = (List) ((ArrayList) movies).clone();
                     isListPopularMoviesCloned = true;
                 }
 
-                if(newText.length() <3 ){
+                if (newText.length() < 3) {
                     return false;
                 }
                 nameQuery = newText;
@@ -132,36 +179,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initRecyclerView() {
-        mLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(movieAdapter);
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                int moviePosition = parent.getChildLayoutPosition(view);
-
-                if(moviePosition == 0 || moviePosition == 1 ){
-                    outRect.top = getAnIntDp(8);
-                    defineMarginBottom(outRect);
-                }else {
-                    defineMarginBottom(outRect);
-                }
-
-                if (moviePosition % 2 == 0) {
-                    defineMargin(outRect, 8,4);
-                } else {
-                    defineMargin(outRect, 4,8);
-                }
-            }
-        });
-    }
-
     private void searchMovies() {
+
         showView(progress);
         movieBO.requestMovies(new ApiCallBack() {
             @Override
             public void onSuccess(Object response) {
+                setVisibilitySearchTypeFavorite(View.VISIBLE, View.VISIBLE);
                 showList((List<Movie>) response);
             }
 
@@ -170,6 +194,11 @@ public class MainActivity extends AppCompatActivity {
                 showError(error);
             }
         }, nameQuery);
+    }
+
+    private void setVisibilitySearchTypeFavorite(int visibilityFavoriteMovieOn, int visibilityFavoriteMovieText) {
+        favoriteMovieOn.setVisibility(visibilityFavoriteMovieOn);
+        favoriteMovieText.setVisibility(visibilityFavoriteMovieText);
     }
 
     @Override
@@ -193,19 +222,6 @@ public class MainActivity extends AppCompatActivity {
         movieAdapter.notifyDataSetChanged();
     }
 
-    private void defineMarginBottom(Rect outRect) {
-        outRect.bottom = getAnIntDp(8);
-    }
-
-    private void defineMargin(Rect outRect ,int marginLeft, int marginRight ) {
-        outRect.left =  getAnIntDp(marginLeft);
-        outRect.right =  getAnIntDp(marginRight);
-    }
-
-    private int getAnIntDp(int value) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
-    }
-
     void showView(View view) {
         recyclerView.setVisibility(View.GONE);
         progress.setVisibility(View.GONE);
@@ -218,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
     @UiThread
     protected void showError(Map errorMap) {
+        setVisibilitySearchTypeFavorite(View.GONE, View.GONE);
         showView(areaErro);
     }
 
