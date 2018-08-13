@@ -8,21 +8,36 @@ Segue abaixo as intrunções de entrega do projeto
 Arquitetura utilizada
 -------------
 
-- **MVC:** 
+- **MVC:** Arquitetura MVC para Visando separar as camadas de apresentação, negócio e acesso a dados. 
 ----------
 
 Bibliotecas de Terceiros
 -------------
-- **Android Annotetions** 
+- **Android Annotetions:** 
+- **gson** 
+- **parceler** 
+- **materialprogressbar** 
+- **Room** 
+- **Volley** 
+- **Picasso** 
+
 
 ----------
 
 O que você melhoraria se tivesse mais tempo
 -------------
- Veria a forma de implementação com Android Annotetions da Classe Settings e do Provider.
+Criaria  uma funcionaidade usando exoplayer para eixibir os trayler dos filmes.
+Faria os testes Uinitários 
+
+
 ----------
 
 Quais requisitos obrigatórios não foram entregues e o porquê 
 -------------
+- Indicar para o usuário quando não há resultados na busca / filmes favoritados: ** tempo
+- Persistência local dos filmes favoritados - ** Precisaria de mais alguns testes  - tempo
+- Orientação landscape durante a exibição do trailer - tempo 
+
+
 
 
