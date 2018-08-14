@@ -2,7 +2,6 @@ package com.challenge.brasil.claro.moviesapp.model.bo;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.ViewUtils;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -12,11 +11,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.challenge.brasil.claro.moviesapp.R;
+import com.challenge.brasil.claro.moviesapp.model.dao.AppDatabase;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.challenge.brasil.claro.moviesapp.util.JsonUtil;
-import com.challenge.brasil.claro.moviesapp.util.ViewUtil;
-import com.challenge.brasil.claro.moviesapp.view.MainActivity_;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -33,15 +32,20 @@ public class MovieBO {
     private static final String TAG = MovieBO.class.getSimpleName();
 
     @RootContext
-    Context context;
+    protected Context context;
+
+    private AppDatabase mDb;
+
+    @AfterInject
+    public void initBO() {
+        mDb = AppDatabase.getInMemoryDatabase(context);
+    }
+
 
     @Background
-    public void requestMovies(final ApiCallBack callBack) {
+    public void requestMovies(final ApiCallBack callBack, String nameQuery) {
         final Map<Integer, String> responseMap = new HashMap<Integer, String>();
-
-        String searchMovieType  = ViewUtil.getSharedPreferences(context);
-        Uri uri = buildMoviesUri(searchMovieType);
-
+        Uri uri = getUri(nameQuery);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, uri.toString(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -75,8 +79,17 @@ public class MovieBO {
                         callBack.onError(responseMap);
                     }
                 });
-
         VolleyRequest.getInstance(context).addToRequestQueue(request);
+    }
+
+    private Uri getUri(String nameQuery) {
+        Uri uri;
+        if (!TextUtils.isEmpty(nameQuery)) {
+            uri = buildMoviesUri(nameQuery);
+        } else {
+            uri = buildSearchPopularMoviesUri();
+        }
+        return uri;
     }
 
     private String validateMessagStatusCodeError(VolleyError error, String errorMessage, NetworkResponse response) {
@@ -109,13 +122,38 @@ public class MovieBO {
         return errorMessage;
     }
 
-    private Uri buildMoviesUri(String searchMovieType) {
+    private Uri buildMoviesUri(String nameQuery) {
         return Uri.parse(context.getString(R.string.SEARCH_MOVIE_URL))
                 .buildUpon()
-                .appendPath(searchMovieType)
+                .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
+                .appendQueryParameter(context.getString(R.string.query), nameQuery)
+                .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
+    }
+
+    private Uri buildSearchPopularMoviesUri() {
+        return Uri.parse(context.getString(R.string.SEARCH_POPULAR_MOVIE_URL))
+                .buildUpon()
+                .appendPath(context.getString(R.string.popular_value))
                 .appendQueryParameter(context.getString(R.string.api_key), context.getString(R.string.KEY_MOVIE_DB))
                 .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
     }
+
+    public List<Movie> searchMoviesFromTitle(String movieTitle){
+        return mDb.movieDao().findMoviesByTitle(movieTitle);
+    }
+
+    public String findSavedMovieId(String movieId){
+        return mDb.movieDao().findSavedMovieId(movieId);
+    }
+
+    public void insert(Movie movie){
+        mDb.movieDao().insert(movie);
+    }
+
+    public void delete(Movie movie){
+        mDb.movieDao().delete(movie);
+    }
+
 
 
 }

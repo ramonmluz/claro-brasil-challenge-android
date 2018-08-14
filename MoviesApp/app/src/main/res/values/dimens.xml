@@ -4,6 +4,7 @@
     <dimen name="loading_margin">30dp</dimen>
 
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_minimum">4dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_big">32dp</dimen>
 
@@ -12,6 +13,7 @@
     <dimen name="margin_card_erro_view">100dp</dimen>
     <dimen name="text_size_big">32sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_small">8sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
