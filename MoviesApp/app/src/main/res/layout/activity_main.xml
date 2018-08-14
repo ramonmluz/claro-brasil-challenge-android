@@ -33,7 +33,7 @@
         android:paddingLeft="@dimen/margin_small"
         android:paddingStart="@dimen/margin_small"
         android:contentDescription="@string/favorite_movies_nome"
-        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:srcCompat="@android:drawable/btn_star_big_off"
         />
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
         android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="@color/yellow_icon"
+        android:textColor="@color/darker_gray"
         />
 
     <android.support.v7.widget.RecyclerView

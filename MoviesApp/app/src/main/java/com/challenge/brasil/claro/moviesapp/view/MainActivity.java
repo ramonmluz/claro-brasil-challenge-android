@@ -1,6 +1,7 @@
 package com.challenge.brasil.claro.moviesapp.view;
 
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.challenge.brasil.claro.moviesapp.adapter.MovieAdapter;
 import com.challenge.brasil.claro.moviesapp.model.bo.ApiCallBack;
 import com.challenge.brasil.claro.moviesapp.model.bo.MovieBO;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
+import com.challenge.brasil.claro.moviesapp.util.ViewUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Movie> popularMovies;
 
     private boolean isListPopularMoviesCloned = false;
+
+    @InstanceState
+    protected boolean isFavoriteMovieOn = false;
 
     @AfterViews
     void init() {
@@ -171,7 +176,13 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
                 nameQuery = newText;
-                searchMovies();
+
+                if (isFavoriteMovieOn) {
+                    searchMoviesFavorites();
+                } else {
+                    searchMovies();
+                }
+
 
                 return true;
             }
@@ -196,6 +207,12 @@ public class MainActivity extends AppCompatActivity {
         }, nameQuery);
     }
 
+    private void searchMoviesFavorites() {
+        showView(progress);
+        List<Movie> movieList =  movieBO.searchMoviesFromTitle(nameQuery);
+        showList(movieList);
+    }
+
     private void setVisibilitySearchTypeFavorite(int visibilityFavoriteMovieOn, int visibilityFavoriteMovieText) {
         favoriteMovieOn.setVisibility(visibilityFavoriteMovieOn);
         favoriteMovieText.setVisibility(visibilityFavoriteMovieText);
@@ -213,8 +230,13 @@ public class MainActivity extends AppCompatActivity {
     @UiThread
     protected void showList(List<Movie> movies) {
         this.movies = movies;
-        fillItemsRecyclerView(this.movies);
-        showView(recyclerView);
+        if (CollectionUtils.isNotEmpty(this.movies)) {
+            fillItemsRecyclerView(this.movies);
+            showView(recyclerView);
+        } else {
+            showView(null);
+            ViewUtil.alert(this, getString(R.string.movies_not_found));
+        }
     }
 
     private void fillItemsRecyclerView(List<Movie> movies) {
@@ -241,6 +263,21 @@ public class MainActivity extends AppCompatActivity {
     @Click(R.id.areaErro)
     protected void reloadMovies() {
         searchMovies();
+    }
+
+    @Click(R.id.favoriteMovieOn)
+    protected void enableSearchFavoriteMovies() {
+        if (isFavoriteMovieOn) {
+            enableFavoriteMovies(false, android.R.drawable.star_big_off, R.color.darker_gray);
+        } else {
+            enableFavoriteMovies(true, android.R.drawable.star_big_on, R.color.yellow_icon);
+        }
+    }
+
+    private void enableFavoriteMovies(boolean isFavorite, int imageDrawble, int color) {
+        isFavoriteMovieOn = isFavorite;
+        favoriteMovieOn.setImageResource(imageDrawble);
+        favoriteMovieText.setTextColor(ContextCompat.getColor(this, color));
     }
 
 }

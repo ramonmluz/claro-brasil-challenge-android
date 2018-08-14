@@ -15,15 +15,15 @@ public interface MovieDao {
 
     @Query("SELECT * FROM Movie")
     List<Movie> getAll();
-//
-//    @Query("SELECT * FROM Movie WHERE uid IN (:MovieIds)")
-//    List<Movie> loadAllByIds(int[] MovieIds);
 
-    @Query("SELECT * FROM Movie WHERE UPPER (original_title) LIKE UPPER ('%' + :movieSearch + '%')")
-    List <Movie> findByMoviesFromTitle(String movieSearch);
+    @Query("SELECT id FROM Movie as movie WHERE id == :movieId")
+    String findSavedMovieId(String movieId);
 
-    @Insert
-    void insertAll(Movie... Movies);
+    @Query("SELECT * FROM Movie WHERE UPPER (original_title) LIKE '%'|| UPPER(:movieSearch) || '%' ")
+    List<Movie> findMoviesByTitle(String movieSearch);
+
+//    @Insert
+//    void insertAll(Movie... Movies);
 
     @Insert
     void insert(Movie Movie);

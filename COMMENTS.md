@@ -34,8 +34,6 @@ Faria os testes Uinitários
 
 Quais requisitos obrigatórios não foram entregues e o porquê 
 -------------
-- Indicar para o usuário quando não há resultados na busca / filmes favoritados: ** tempo
-- Persistência local dos filmes favoritados - ** Precisaria de mais alguns testes  - tempo
 - Orientação landscape durante a exibição do trailer - tempo 
 
 

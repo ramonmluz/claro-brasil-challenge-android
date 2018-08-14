@@ -2,6 +2,7 @@ package com.challenge.brasil.claro.moviesapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,10 +47,21 @@ public class MovieDatailActivity extends AppCompatActivity {
     protected boolean isFavoriteOn = false;
 
     @AfterViews
-    void init (){
+    void init() {
         if (movie != null) {
-            loadMovieImage();
             initFields();
+            loadMovieImage();
+            searchSavedMovie();
+
+        }
+    }
+
+    private void searchSavedMovie() {
+        String movieId = movieBO.findSavedMovieId(movie.getId());
+        if (!TextUtils.isEmpty(movieId)) {
+            enableFavoriteMovie(true, android.R.drawable.star_on);
+        }else{
+            enableFavoriteMovie(false, android.R.drawable.star_off);
         }
     }
 
@@ -60,7 +72,7 @@ public class MovieDatailActivity extends AppCompatActivity {
     }
 
     private void loadMovieImage() {
-        String imageUrl = getString(R.string.BASE_URL_IMAGE) + movie.getPosterPath() ;
+        String imageUrl = getString(R.string.BASE_URL_IMAGE) + movie.getPosterPath();
         Picasso.with(movieImageDetail.getContext()).load(imageUrl).placeholder(R.mipmap.local_movies).error(R.mipmap.ic_launcher)
                 .into(movieImageDetail,
                         new Callback() {
@@ -77,16 +89,19 @@ public class MovieDatailActivity extends AppCompatActivity {
     }
 
     @Click(R.id.favoriteMovieDetail)
-    public void maintainMovie(){
-        if(isFavoriteOn){
-            isFavoriteOn = false;
-            favoriteMovieDetail.setImageResource(android.R.drawable.star_off);
+    public void maintainMovie() {
+        if (isFavoriteOn) {
+            enableFavoriteMovie(false, android.R.drawable.star_off);
             movieBO.delete(movie);
         } else {
-            isFavoriteOn = true;
-            favoriteMovieDetail.setImageResource(android.R.drawable.star_on);
+            enableFavoriteMovie(true, android.R.drawable.star_on);
             movieBO.insert(movie);
         }
+    }
+
+    private void enableFavoriteMovie(boolean isFavorite, int imageDrawble) {
+        isFavoriteOn = isFavorite;
+        favoriteMovieDetail.setImageResource(imageDrawble);
     }
 
 }

@@ -30,5 +30,6 @@
     <string name="enter_search_movie">Enter search movie</string>
     <string name="movie_image">movie image</string>
     <string name="see_only_favorites">See only favorites</string>
+    <string name="movies_not_found">Movies not found!</string>
 
 </resources>

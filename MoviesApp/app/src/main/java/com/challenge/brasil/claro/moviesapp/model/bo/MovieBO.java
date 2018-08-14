@@ -138,8 +138,12 @@ public class MovieBO {
                 .appendQueryParameter(context.getString(R.string.language), context.getString(R.string.LANGUAGE_VALUE)).build();
     }
 
-    public List<Movie> findByMoviesFromTitle(String movieTitle){
-        return mDb.movieDao().findByMoviesFromTitle(movieTitle);
+    public List<Movie> searchMoviesFromTitle(String movieTitle){
+        return mDb.movieDao().findMoviesByTitle(movieTitle);
+    }
+
+    public String findSavedMovieId(String movieId){
+        return mDb.movieDao().findSavedMovieId(movieId);
     }
 
     public void insert(Movie movie){
@@ -149,5 +153,7 @@ public class MovieBO {
     public void delete(Movie movie){
         mDb.movieDao().delete(movie);
     }
+
+
 
 }

@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.challenge.brasil.claro.moviesapp.MovieDatailActivity;
 import com.challenge.brasil.claro.moviesapp.MovieDatailActivity_;
 import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
