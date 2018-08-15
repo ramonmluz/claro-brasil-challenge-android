@@ -25,11 +25,16 @@
 
 
     <string name="error_listing_movies">Error listing Movies. Click here to reload!</string>
+    <string name="error_listing_trailers">Error listing Trailers. Click here to reload!</string>
     <string name="reload_image">reload image</string>
     <string name="title_activity_settings">Settings</string>
     <string name="enter_search_movie">Enter search movie</string>
     <string name="movie_image">movie image</string>
     <string name="see_only_favorites">See only favorites</string>
     <string name="movies_not_found">Movies not found!</string>
+    <string name="trailers_not_found">Trailers not found!</string>
+    <string name="trailer_url">http://www.youtube.com/watch?v=</string>
+    <string name="videos">videos</string>
+    <string name="trailers_info">Trailers:</string>
 
 </resources>

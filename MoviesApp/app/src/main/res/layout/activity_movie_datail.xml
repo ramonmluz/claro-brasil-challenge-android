@@ -46,7 +46,76 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
         app:layout_constraintTop_toBottomOf="@id/movieImageDetail"
-       tools:text="Movies Teste Search" />
+        tools:text="Movies Teste Search" />
+
+    <TextView
+        android:id="@+id/trailerInfo"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/text_size_medium"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/overview"
+        app:layout_constraintTop_toBottomOf="@+id/overview"
+        android:text="@string/trailers_info"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/trailerRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/trailerInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"
+        tools:visibility="visible" />
+
+
+    <include
+        android:id="@+id/trailerProgress"
+        layout="@layout/view_progress"
+        android:layout_width="@dimen/loading_margin"
+        android:layout_height="@dimen/loading_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overview" />
+
+    <LinearLayout
+        android:id="@+id/trailerAreaErro"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_card_erro_view"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_medium"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/overview"
+        tools:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/load_img_size"
+            android:layout_height="@dimen/load_img_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_big"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_big"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:contentDescription="@string/reload_image"
+            android:src="@mipmap/ic_reload" />
+
+        <TextView
+            android:id="@+id/textTrailerMsgErroView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="@string/error_listing_movies" />
+
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

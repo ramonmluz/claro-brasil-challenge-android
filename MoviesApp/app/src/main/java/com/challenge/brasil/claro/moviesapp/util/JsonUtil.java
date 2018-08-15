@@ -1,6 +1,7 @@
 package com.challenge.brasil.claro.moviesapp.util;
 
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
+import com.challenge.brasil.claro.moviesapp.model.vo.Trailer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,5 +30,9 @@ public class JsonUtil {
 
     public static List<Movie> parseJsonMovieList(String jsonString) {
         return getGson().fromJson(jsonString, new TypeToken <List<Movie>>() {}.getType());
+    }
+
+    public static List<Trailer> parseJsonTrailerList(String jsonString) {
+        return getGson().fromJson(jsonString, new TypeToken <List<Trailer>>() {}.getType());
     }
 }

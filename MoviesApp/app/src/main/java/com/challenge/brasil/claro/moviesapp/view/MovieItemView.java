@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,8 +25,6 @@ public class MovieItemView extends FrameLayout {
 
     @ViewById
     protected ImageView movieImageGrid;
-
-    private ViewGroup.MarginLayoutParams layoutParams;
 
     public MovieItemView(Context context) {
         super(context);
