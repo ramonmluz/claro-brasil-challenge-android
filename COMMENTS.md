@@ -26,7 +26,7 @@ Bibliotecas de Terceiros
 
 O que você melhoraria se tivesse mais tempo
 -------------
-Criaria  uma funcionaidade usando exoplayer para eixibir os trayler dos filmes.
+Criaria  uma funcionaidade usando YouTuBe Api para eixibir os trayler dos filmes.
 Faria os testes Uinitários 
 
 

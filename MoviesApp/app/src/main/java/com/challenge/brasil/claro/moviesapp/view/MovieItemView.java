@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.challenge.brasil.claro.moviesapp.MovieDatailActivity_;
 import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.squareup.picasso.Callback;

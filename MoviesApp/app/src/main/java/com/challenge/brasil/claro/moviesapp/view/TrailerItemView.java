@@ -3,20 +3,12 @@ package com.challenge.brasil.claro.moviesapp.view;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.challenge.brasil.claro.moviesapp.MovieDatailActivity_;
 import com.challenge.brasil.claro.moviesapp.R;
-import com.challenge.brasil.claro.moviesapp.model.vo.Movie;
 import com.challenge.brasil.claro.moviesapp.model.vo.Trailer;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -44,19 +36,27 @@ public class TrailerItemView extends FrameLayout {
 
     public void bind(Trailer trailer, int position, List<Trailer> trailers) {
         if (trailer != null) {
-            Object[] params = new Object[3];
+            Object[] params = new Object[2];
             trailerName.setText(trailer.getName());
-            params[0] = trailer;
-            params[1] = position;
-            params[2] = trailers;
+            params[0] = position;
+            params[1] = trailers;
             trailerName.setTag(params);
         }
     }
 
 
-    @Click(R.id.movieImageGrid)
+    @Click(R.id.trailerName)
     void showTrailers() {
-        // TODO
+        // Show Traliers
+        Object[] params = (Object[]) trailerName.getTag();
+
+        //TODO
+        TrailerActivity_.intent(getContext())
+                .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .position((Integer) params[0])
+                .trailers((List<Trailer>) params[1])
+                .start();
+
     }
 
 }

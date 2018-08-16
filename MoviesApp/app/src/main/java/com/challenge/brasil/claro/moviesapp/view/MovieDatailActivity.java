@@ -1,4 +1,4 @@
-package com.challenge.brasil.claro.moviesapp;
+package com.challenge.brasil.claro.moviesapp.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.challenge.brasil.claro.moviesapp.R;
 import com.challenge.brasil.claro.moviesapp.adapter.TrailerAdapter;
 import com.challenge.brasil.claro.moviesapp.model.bo.ApiCallBack;
 import com.challenge.brasil.claro.moviesapp.model.bo.MovieBO;
