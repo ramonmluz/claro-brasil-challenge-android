@@ -26,10 +26,10 @@ Bibliotecas de Terceiros
 
 O que você melhoraria se tivesse mais tempo
 -------------
-Layout diferenciado para tablet caso aplicável
-Suporte a landscape nos smartphones e tablets
-Testes unitários
-Integração contínua (Travis)
+ - Layout diferenciado para tablet caso aplicável
+ - Suporte a landscape nos smartphones e tablets
+ - Testes unitários
+ - Integração contínua (Travis)
 
 
 
