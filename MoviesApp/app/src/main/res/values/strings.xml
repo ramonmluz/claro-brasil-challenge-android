@@ -4,6 +4,8 @@
     <string name="SEARCH_POPULAR_MOVIE_URL">https://api.themoviedb.org/3/movie/</string>
     <string name="BASE_URL_IMAGE">http://image.tmdb.org/t/p/w185</string>
     <string name="KEY_MOVIE_DB">c4852d11798d35ebae996afb362875d4</string>
+    <string name="KEY_YOUTUBE_API">AIzaSyD5q-0zjmhx24ZfWIAcfkSKt3z2z_FYOzY</string>
+
     <string name="LANGUAGE_VALUE">en-US</string>
 
     <string name="action_settings">Settings</string>

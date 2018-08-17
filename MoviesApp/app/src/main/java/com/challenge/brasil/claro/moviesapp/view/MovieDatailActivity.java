@@ -118,6 +118,7 @@ public class MovieDatailActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         mLayoutManager = new LinearLayoutManager(this);
+        trailerRecyclerView.setNestedScrollingEnabled(false);
         trailerRecyclerView.setLayoutManager(mLayoutManager);
         trailerRecyclerView.setAdapter(trailerAdapter);
         trailerRecyclerView.addItemDecoration(new DividerItemDecoration(trailerRecyclerView.getContext(), DividerItemDecoration.VERTICAL));

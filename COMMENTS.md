@@ -26,15 +26,14 @@ Bibliotecas de Terceiros
 
 O que você melhoraria se tivesse mais tempo
 -------------
-Criaria  uma funcionaidade usando YouTuBe Api para eixibir os trayler dos filmes.
-Faria os testes Uinitários 
+Layout diferenciado para tablet caso aplicável
+Suporte a landscape nos smartphones e tablets
+Testes unitários
+Integração contínua (Travis)
 
 
-----------
 
-Quais requisitos obrigatórios não foram entregues e o porquê 
--------------
-- Orientação landscape durante a exibição do trailer - tempo 
+
 
 
 

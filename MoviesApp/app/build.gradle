@@ -35,6 +35,8 @@ dependencies {
 
 
     implementation 'com.google.code.gson:gson:2.8.1'  // gson
+    implementation files('libs/YouTubeAndroidPlayerApi.jar') // YouTube
+
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2' //ProgressBar
     //  implementation fileTree(dir: 'libs', include: ['*.jar'])
 

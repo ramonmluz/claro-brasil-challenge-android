@@ -31,7 +31,7 @@ public class TrailerAdapter extends RecyclerViewAdapterBase<Trailer, TrailerItem
     public void onBindViewHolder(ViewWrapper<TrailerItemView> holder, int position) {
         TrailerItemView view = holder.getView();
         Trailer trailer = items.get(position);
-        view.bind(trailer, position, items);
+        view.bind(trailer);
     }
 
     @Override

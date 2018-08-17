@@ -1,46 +1,50 @@
 package com.challenge.brasil.claro.moviesapp.view;
 
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.challenge.brasil.claro.moviesapp.R;
-import com.challenge.brasil.claro.moviesapp.adapter.TrailerPagerAdapter;
 import com.challenge.brasil.claro.moviesapp.model.vo.Trailer;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
-
 @EActivity(R.layout.activity_trailer)
-public class TrailerActivity extends AppCompatActivity {
-
-
-    @ViewById
-    protected ViewPager viewPager;
-
-    @ViewById
-    protected PagerSlidingTabStrip tabs;
+public class TrailerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener  {
 
     @Extra
-    protected List<Trailer> trailers;
+    protected Trailer trailer;
 
-    @Extra
-    protected int position;
+    @ViewById
+    protected YouTubePlayerView youTubePlayerView;
 
-    private PagerAdapter pagerAdapter;
 
     @AfterViews
     void init() {
+        youTubePlayerView.initialize(getString(R.string.KEY_YOUTUBE_API),this);
+    }
 
-        pagerAdapter = new TrailerPagerAdapter(getSupportFragmentManager(), trailers);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(position);
-        tabs.setViewPager(viewPager);
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+        if (!wasRestored) {
+            youTubePlayer.cueVideo(trailer.getKey()); // Plays https://www.youtube.com/watch?v=sAOzrChqmd0'
+        }
+
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, 1).show();
+        } else {
+            String error = String.format("Error", errorReason.toString());
+            Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+        }
     }
 
 }

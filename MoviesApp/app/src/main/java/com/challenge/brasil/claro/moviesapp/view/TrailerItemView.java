@@ -13,8 +13,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
-
 
 @EViewGroup(R.layout.view_trailer_item)
 public class TrailerItemView extends FrameLayout {
@@ -34,27 +32,19 @@ public class TrailerItemView extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void bind(Trailer trailer, int position, List<Trailer> trailers) {
+    public void bind(Trailer trailer) {
         if (trailer != null) {
-            Object[] params = new Object[2];
             trailerName.setText(trailer.getName());
-            params[0] = position;
-            params[1] = trailers;
-            trailerName.setTag(params);
+            trailerName.setTag(trailer);
         }
     }
 
 
     @Click(R.id.trailerName)
     void showTrailers() {
-        // Show Traliers
-        Object[] params = (Object[]) trailerName.getTag();
-
-        //TODO
         TrailerActivity_.intent(getContext())
                 .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .position((Integer) params[0])
-                .trailers((List<Trailer>) params[1])
+                .trailer((Trailer) trailerName.getTag())
                 .start();
 
     }
